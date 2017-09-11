@@ -1,0 +1,27 @@
+Juliet Test Suite for Java - Changelog
+
+Dec 2012 - v1.2 
+-Total number of test cases: 25,477
+-Total number of CWEs covered: 112 
+-CWEs added: 15, 197, 226, 459, 526, 539, 667  
+-CWEs removed: 180, 330, 489, 497, 514, 547, 665, 784
+-One flow variant was removed.
+-Number of flaw types for 20 CWEs either increased or decreased.
+-Directories were split into smaller subdirectories, each 
+	containing no more than 1,000 test case files.
+-Removal of dead code from several control flow variants.
+(See Appendix E of the v1.2 user guide for more details on the above changes.)
+
+Sep 2012 - v1.1.1
+-Total number of test cases: 23,957
+-Total number of CWEs covered: 113
+-Fixed Bug: Included methods required for building test cases after adding or 
+	removing test cases. (No other changes to v1.1, Dec 2011.)
+
+Dec 2011 - v1.1
+-Total number of test cases: 23,957
+-Total number of CWEs covered: 113
+
+Dec 2010 - v1.0 (Initial release)
+-Total number of test cases: 13,801
+-Total number of CWEs covered: 106

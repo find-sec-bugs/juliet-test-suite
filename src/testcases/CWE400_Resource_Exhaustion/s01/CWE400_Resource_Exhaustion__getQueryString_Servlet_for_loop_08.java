@@ -1,0 +1,267 @@
+/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE400_Resource_Exhaustion__getQueryString_Servlet_for_loop_08.java
+Label Definition File: CWE400_Resource_Exhaustion.label.xml
+Template File: sources-sinks-08.tmpl.java
+*/
+/*
+* @description
+* CWE: 400 Resource Exhaustion
+* BadSource: getQueryString_Servlet Parse id param out of the URL query string (without using getParameter())
+* GoodSource: A hardcoded non-zero, non-min, non-max, even number
+* Sinks: for_loop
+*    GoodSink: Validate count before using it as the loop variant in a for loop
+*    BadSink : Use count as the loop variant in a for loop
+* Flow Variant: 08 Control flow: if(privateReturnsTrue()) and if(privateReturnsFalse())
+*
+* */
+
+package testcases.CWE400_Resource_Exhaustion.s01;
+import testcasesupport.*;
+
+import javax.servlet.http.*;
+
+
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+
+public class CWE400_Resource_Exhaustion__getQueryString_Servlet_for_loop_08 extends AbstractTestCaseServlet
+{
+    /* The methods below always return the same value, so a tool
+     * should be able to figure out that every call to these
+     * methods will return true or return false. */
+    private boolean privateReturnsTrue()
+    {
+        return true;
+    }
+
+    private boolean privateReturnsFalse()
+    {
+        return false;
+    }
+
+    public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        int count;
+        if (privateReturnsTrue())
+        {
+            count = Integer.MIN_VALUE; /* initialize count in case id is not in query string */
+            /* POTENTIAL FLAW: Parse id param out of the URL querystring (without using getParam) */
+            {
+                StringTokenizer tokenizer = new StringTokenizer(request.getQueryString(), "&");
+                while (tokenizer.hasMoreTokens())
+                {
+                    String token = tokenizer.nextToken(); /* a token will be like "id=33" */
+                    if(token.startsWith("id=")) /* check if we have the "id" parameter" */
+                    {
+                        try
+                        {
+                            count = Integer.parseInt(token.substring(3)); /* set count to the int 33 */
+                        }
+                        catch(NumberFormatException exceptNumberFormat)
+                        {
+                            IO.logger.log(Level.WARNING, "Number format exception reading id from query string", exceptNumberFormat);
+                        }
+                        break; /* exit while loop */
+                    }
+                }
+            }
+        }
+        else
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+             * but ensure count is inititialized before the Sink to avoid compiler errors */
+            count = 0;
+        }
+
+        if (privateReturnsTrue())
+        {
+            int i = 0;
+            /* POTENTIAL FLAW: For loop using count as the loop variant and no validation */
+            for (i = 0; i < count; i++)
+            {
+                IO.writeLine("Hello");
+            }
+        }
+    }
+
+    /* goodG2B1() - use goodsource and badsink by changing first privateReturnsTrue() to privateReturnsFalse() */
+    private void goodG2B1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        int count;
+        if (privateReturnsFalse())
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+             * but ensure count is inititialized before the Sink to avoid compiler errors */
+            count = 0;
+        }
+        else
+        {
+
+            /* FIX: Use a hardcoded number that won't cause underflow, overflow, divide by zero, or loss-of-precision issues */
+            count = 2;
+
+        }
+
+        if (privateReturnsTrue())
+        {
+            int i = 0;
+            /* POTENTIAL FLAW: For loop using count as the loop variant and no validation */
+            for (i = 0; i < count; i++)
+            {
+                IO.writeLine("Hello");
+            }
+        }
+    }
+
+    /* goodG2B2() - use goodsource and badsink by reversing statements in first if */
+    private void goodG2B2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        int count;
+        if (privateReturnsTrue())
+        {
+            /* FIX: Use a hardcoded number that won't cause underflow, overflow, divide by zero, or loss-of-precision issues */
+            count = 2;
+        }
+        else
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+             * but ensure count is inititialized before the Sink to avoid compiler errors */
+            count = 0;
+        }
+
+        if (privateReturnsTrue())
+        {
+            int i = 0;
+            /* POTENTIAL FLAW: For loop using count as the loop variant and no validation */
+            for (i = 0; i < count; i++)
+            {
+                IO.writeLine("Hello");
+            }
+        }
+    }
+
+    /* goodB2G1() - use badsource and goodsink by changing second privateReturnsTrue() to privateReturnsFalse() */
+    private void goodB2G1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        int count;
+        if (privateReturnsTrue())
+        {
+            count = Integer.MIN_VALUE; /* initialize count in case id is not in query string */
+            /* POTENTIAL FLAW: Parse id param out of the URL querystring (without using getParam) */
+            {
+                StringTokenizer tokenizer = new StringTokenizer(request.getQueryString(), "&");
+                while (tokenizer.hasMoreTokens())
+                {
+                    String token = tokenizer.nextToken(); /* a token will be like "id=33" */
+                    if(token.startsWith("id=")) /* check if we have the "id" parameter" */
+                    {
+                        try
+                        {
+                            count = Integer.parseInt(token.substring(3)); /* set count to the int 33 */
+                        }
+                        catch(NumberFormatException exceptNumberFormat)
+                        {
+                            IO.logger.log(Level.WARNING, "Number format exception reading id from query string", exceptNumberFormat);
+                        }
+                        break; /* exit while loop */
+                    }
+                }
+            }
+        }
+        else
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+             * but ensure count is inititialized before the Sink to avoid compiler errors */
+            count = 0;
+        }
+
+        if (privateReturnsFalse())
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run */
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+
+            int i = 0;
+
+            /* FIX: Validate count before using it as the for loop variant */
+            if (count > 0 && count <= 20)
+            {
+                for (i = 0; i < count; i++)
+                {
+                    IO.writeLine("Hello");
+                }
+            }
+
+        }
+    }
+
+    /* goodB2G2() - use badsource and goodsink by reversing statements in second if  */
+    private void goodB2G2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        int count;
+        if (privateReturnsTrue())
+        {
+            count = Integer.MIN_VALUE; /* initialize count in case id is not in query string */
+            /* POTENTIAL FLAW: Parse id param out of the URL querystring (without using getParam) */
+            {
+                StringTokenizer tokenizer = new StringTokenizer(request.getQueryString(), "&");
+                while (tokenizer.hasMoreTokens())
+                {
+                    String token = tokenizer.nextToken(); /* a token will be like "id=33" */
+                    if(token.startsWith("id=")) /* check if we have the "id" parameter" */
+                    {
+                        try
+                        {
+                            count = Integer.parseInt(token.substring(3)); /* set count to the int 33 */
+                        }
+                        catch(NumberFormatException exceptNumberFormat)
+                        {
+                            IO.logger.log(Level.WARNING, "Number format exception reading id from query string", exceptNumberFormat);
+                        }
+                        break; /* exit while loop */
+                    }
+                }
+            }
+        }
+        else
+        {
+            /* INCIDENTAL: CWE 561 Dead Code, the code below will never run
+             * but ensure count is inititialized before the Sink to avoid compiler errors */
+            count = 0;
+        }
+
+        if (privateReturnsTrue())
+        {
+            int i = 0;
+            /* FIX: Validate count before using it as the for loop variant */
+            if (count > 0 && count <= 20)
+            {
+                for (i = 0; i < count; i++)
+                {
+                    IO.writeLine("Hello");
+                }
+            }
+        }
+    }
+
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        goodG2B1(request, response);
+        goodG2B2(request, response);
+        goodB2G1(request, response);
+        goodB2G2(request, response);
+    }
+
+    /* Below is the main(). It is only used when building this testcase on
+     * its own for testing or for building a binary to use in testing binary
+     * analysis tools. It is not used when compiling all the testcases as one
+     * application, which is how source code analysis tools are tested.
+     */
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
+    }
+}
